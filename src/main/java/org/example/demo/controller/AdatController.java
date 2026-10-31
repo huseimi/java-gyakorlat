@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.example.demo.entity.Rendeles;
+import java.util.List;
 
 @Controller
 public class AdatController {
@@ -41,6 +42,15 @@ public class AdatController {
         );
         model.addAttribute("rendelesOldal", rendelesOldal);
 
+        List<Object[]> topPizzak = rendelesRepository.findTop10Pizzak();
+
+        model.addAttribute("chartLabels", topPizzak.stream()
+                .map(sor -> String.valueOf(sor[0]))
+                .toList());
+
+        model.addAttribute("chartValues", topPizzak.stream()
+                .map(sor -> ((Number) sor[1]).longValue())
+                .toList());
         return "adatok";
     }
 }

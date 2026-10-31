@@ -8,7 +8,36 @@
 <div th:replace="~{menu :: menu}"></div>
 
 <h1>Pizzaadatbázis</h1>
+<h2>10 legtöbbet rendelt pizza</h2>
+<div style="max-width: 900px;">
+    <canvas id="pizzaChart"></canvas>
+</div>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script th:inline="javascript">
+    const labels = [[${chartLabels}]];
+    const values = [[${chartValues}]];
+
+    new Chart(document.getElementById('pizzaChart'), {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Megrendelt darab',
+                data: values,
+                backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                borderColor: 'rgb(54, 162, 235)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+</script>
 <h2>Kategóriák</h2>
 <table border="1">
     <thead>
