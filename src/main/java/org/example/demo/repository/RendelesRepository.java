@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface RendelesRepository extends JpaRepository<Rendeles, Long> {
 
+    boolean existsByPizza_Nev(String nev);
+
     @Query(value = "SELECT pizzanev, SUM(darab) AS osszes_darab " +
             "FROM rendeles " +
             "GROUP BY pizzanev " +

@@ -1,14 +1,112 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="hu" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Admin</title>
+  <title>Adminisztráció</title>
+  <style>
+    table {
+      border-collapse: collapse;
+    }
+
+    th, td {
+      border: 1px solid #999;
+      padding: 8px;
+      vertical-align: top;
+    }
+
+    form {
+      margin: 4px 0;
+    }
+  </style>
 </head>
 <body>
-  <div th:replace="~{menu :: menu}"></div>
-  <hr>
-  <h1>Admin page</h1>
-  <p>This page can only be seen by ADMIN.</p>
-  <p>Admin:<strong sec:authentication="name"></strong></p>
+<div th:replace="~{menu :: menu}"></div>
+
+<h1>Pizza adminisztráció</h1>
+
+<p th:if="${hiba != null}" th:text="${hiba}" style="color: red;"></p>
+<p th:if="${siker != null}" th:text="${siker}" style="color: green;"></p>
+
+<h2>Új pizza felvétele</h2>
+
+<form th:action="@{/admin}" method="post">
+  <input type="hidden" name="muvelet" value="letrehoz">
+
+  <p>
+    <label for="ujNev">Pizza neve:</label>
+    <input id="ujNev" type="text" name="nev" maxlength="100" required>
+  </p>
+
+  <p>
+    <label for="ujKategoria">Kategória:</label>
+    <select id="ujKategoria" name="kategorianev" required>
+      <option value="" disabled selected>Válassz kategóriát</option>
+      <option th:each="kategoria : ${kategoriak}"
+              th:value="${kategoria.nev}"
+              th:text="${kategoria.nev}">
+      </option>
+    </select>
+  </p>
+
+  <p>
+    <label>
+      <input type="checkbox" name="vegetarianus" value="true">
+      Vegetáriánus
+    </label>
+  </p>
+
+  <button type="submit">Pizza felvétele</button>
+</form>
+
+<h2>Meglévő pizzák</h2>
+
+<table>
+  <thead>
+  <tr>
+    <th>Pizza neve</th>
+    <th colspan="3">Módosítás vagy törlés</th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <tr th:each="pizza, allapot : ${pizzak}">
+    <td th:text="${pizza.nev}"></td>
+
+    <td colspan="3">
+      <form th:action="@{/admin}" method="post">
+        <input type="hidden" name="muvelet" value="frissit">
+        <input type="hidden" name="nev" th:value="${pizza.nev}">
+
+        <label>
+          Kategória:
+          <select name="kategorianev" required>
+            <option th:each="kategoria : ${kategoriak}"
+                    th:value="${kategoria.nev}"
+                    th:text="${kategoria.nev}"
+                    th:selected="${kategoria.nev == pizza.kategoria.nev}">
+            </option>
+          </select>
+        </label>
+
+        <label>
+          <input type="checkbox"
+                 name="vegetarianus"
+                 value="true"
+                 th:checked="${pizza.vegetarianus}">
+          Vegetáriánus
+        </label>
+
+        <button type="submit">Módosítás mentése</button>
+      </form>
+
+      <form th:action="@{/admin}" method="post">
+        <input type="hidden" name="muvelet" value="torol">
+        <input type="hidden" name="nev" th:value="${pizza.nev}">
+        <button type="submit">Törlés</button>
+      </form>
+    </td>
+  </tr>
+  </tbody>
+</table>
 </body>
 </html>
