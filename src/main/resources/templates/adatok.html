@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Pizzaadatok</title>
+</head>
+<body>
+<div th:replace="~{menu :: menu}"></div>
+
+<h1>Pizzaadatbázis</h1>
+
+<h2>Kategóriák</h2>
+<table border="1">
+    <thead>
+    <tr><th>Név</th><th>Ár</th></tr>
+    </thead>
+    <tbody>
+    <tr th:each="kategoria : ${kategoriak}">
+        <td th:text="${kategoria.nev}"></td>
+        <td th:text="${kategoria.ar}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<h2>Pizzák</h2>
+<table border="1">
+    <thead>
+    <tr><th>Név</th><th>Kategória</th><th>Vegetáriánus</th></tr>
+    </thead>
+    <tbody>
+    <tr th:each="pizza : ${pizzak}">
+        <td th:text="${pizza.nev}"></td>
+        <td th:text="${pizza.kategoria.nev}"></td>
+        <td th:text="${pizza.vegetarianus ? 'Igen' : 'Nem'}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<h2>Rendelések</h2>
+<table border="1">
+    <thead>
+    <tr><th>Azonosító</th><th>Pizza</th><th>Darab</th><th>Felvétel</th><th>Kiszállítás</th></tr>
+    </thead>
+    <tbody>
+    <tr th:each="rendeles : ${rendelesOldal.content}">
+        <td th:text="${rendeles.az}"></td>
+        <td th:text="${rendeles.pizza.nev}"></td>
+        <td th:text="${rendeles.darab}"></td>
+        <td th:text="${rendeles.felvetel}"></td>
+        <td th:text="${rendeles.kiszallitas}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<p>
+    <a th:if="${rendelesOldal.hasPrevious()}"
+       th:href="@{/adatok(oldal=${rendelesOldal.number - 1})}">Előző oldal</a>
+    <span th:text="${rendelesOldal.number + 1} + ' / ' + ${rendelesOldal.totalPages}"></span>
+    <a th:if="${rendelesOldal.hasNext()}"
+       th:href="@{/adatok(oldal=${rendelesOldal.number + 1})}">Következő oldal</a>
+</p>
+</body>
+</html>
