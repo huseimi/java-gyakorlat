@@ -3,11 +3,13 @@
 <body>
     <nav th:fragment="menu">
         <a th:href="@{/}">Home</a>
+        | <a th:href="@{/kapcsolat}">Kapcsolat</a>
         | <a th:href="@{/adatok}">Pizzaadatok</a>
         <span sec:authorize="isAuthenticated()"> | <a th:href="@{/user}">User</a></span>
         <span sec:authorize="hasRole('ADMIN')"> | <a th:href="@{/admin}">Admin</a></span>
         <span sec:authorize="isAnonymous()"> | <a th:href="@{/register}">Register</a>  | <a th:href="@{/login}">Login</a></span>
         <span sec:authorize="isAuthenticated()"> |
+            | <a th:href="@{/uzenetek}">Beérkezett üzenetek</a>
             <form th:action="@{/logout}" method="post" style="display: inline">
                 <button type="submit">Logout</button>
             </form>

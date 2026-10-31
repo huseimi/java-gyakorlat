@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Kapcsolat</title>
+</head>
+<body>
+<div th:replace="~{menu :: menu}"></div>
+
+<h1>Kapcsolat</h1>
+<p th:if="${param.elkuldve}">Köszönjük, az üzenetet elmentettük.</p>
+
+<form th:action="@{/kapcsolat}" th:object="${kapcsolatUzenet}" method="post">
+    <p>
+        <label for="nev">Név</label><br>
+        <input id="nev" type="text" th:field="*{nev}">
+        <br><span th:errors="*{nev}"></span>
+    </p>
+    <p>
+        <label for="email">E-mail-cím</label><br>
+        <input id="email" type="email" th:field="*{email}">
+        <br><span th:errors="*{email}"></span>
+    </p>
+    <p>
+        <label for="targy">Tárgy</label><br>
+        <input id="targy" type="text" th:field="*{targy}">
+        <br><span th:errors="*{targy}"></span>
+    </p>
+    <p>
+        <label for="uzenet">Üzenet</label><br>
+        <textarea id="uzenet" th:field="*{uzenet}" rows="8" cols="50"></textarea>
+        <br><span th:errors="*{uzenet}"></span>
+    </p>
+    <button type="submit">Üzenet küldése</button>
+</form>
+</body>
+</html>
